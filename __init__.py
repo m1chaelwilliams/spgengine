@@ -1,5 +1,5 @@
 '''
-SPGEngine (Sphere's Pygame Engine) is an ECS-like meta-framework for pygame
+SPGEngine (Sphere's Pygame Engine) is a meta-framework for pygame
 '''
 
 
