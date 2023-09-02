@@ -1,5 +1,5 @@
 import pygame
-from spgengine.events import Eventhandler
+from spgengine.io.events import Eventhandler
 from spgengine.managers.scenemanager import SceneManager
 from spgengine.scenes.basescene import BaseScene
 import sys

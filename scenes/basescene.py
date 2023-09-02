@@ -1,6 +1,7 @@
 import pygame
 from pygame import Surface
 from spgengine.managers import *
+from spgengine.io.events import EventHandler
 
 class BaseScene:
     def __init__(self) -> None:
