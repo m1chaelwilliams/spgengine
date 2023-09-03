@@ -1,23 +1,18 @@
 import pygame
-from spgengine.io.events import Eventhandler
+from spgengine.io import Eventhandler
 from spgengine.managers.scenemanager import SceneManager
 from spgengine.scenes.basescene import BaseScene
 import sys
 
 class WindowManager:
-    def __init__(self,
-                 win_size: tuple[int, int] = (1280, 720),
-                 fps: int = 60,
-                 ) -> None:
+    def __init__(self,) -> None:
         pygame.init()
-        self.screen = pygame.display.set_mode(win_size)
-        self.fps = fps
         self.clock = pygame.time.Clock()
+        self.fps = 0
 
         self.scenes: dict[str, BaseScene] = {
         }
         self.DEFAULT_SCENE = BaseScene()
-    
     def start(self) -> None:
         while not Eventhandler.close_requested:
             self.update()
@@ -25,16 +20,26 @@ class WindowManager:
         self.close()
     def update(self) -> None:
         Eventhandler.process_events(pygame.event.get())
-        self.scenes.get(SceneManager.get_scene(), self.DEFAULT_SCENE).update()
+        dt = self.clock.tick(self.fps) / 1000
+        self.scenes.get(SceneManager.get_scene(), self.DEFAULT_SCENE).update(dt)
     def draw(self) -> None:
         self.scenes.get(SceneManager.get_scene(), self.DEFAULT_SCENE).draw(self.screen)
         pygame.display.update()
-        self.clock.tick(self.fps)
+        
     def close(self) -> None:
         pygame.quit()
         sys.exit()
 
     # utils
+    def create_display(self,
+                       win_size: tuple[int, int],
+                       *flags
+                       ):
+        self.screen = pygame.display.set_mode(win_size, *flags)
+        return self
+    def set_fps(self, fps: float):
+        self.fps = fps
+        return self
     def add_scene(self, name: str, scene: BaseScene):
         self.scenes[name] = scene
         return self
