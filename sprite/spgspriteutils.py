@@ -46,3 +46,10 @@ def get_position_from_origin(origin: Vector2, angle: float, distance_from_center
     
     return origin + offset 
 
+# physics / movement
+
+def lerp(origin: Vector2, target: Vector2, speed: int = 20) -> Vector2:
+    return Vector2(
+        (target.x - origin.x) * speed,
+        (target.y - origin.y) * speed
+    )

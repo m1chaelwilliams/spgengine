@@ -14,9 +14,7 @@ class GameManager:
         self.clock = pygame.time.Clock()
         self.fps = 0
 
-        self.scenes: dict[str, BaseScene] = {
-        }
-        self.DEFAULT_SCENE = BaseScene()
+        self.scene_manager = SceneManager()
     def start(self) -> None:
         while not Eventhandler.close_requested:
             self.update()
@@ -26,9 +24,9 @@ class GameManager:
         Eventhandler.process_events(pygame.event.get())
         dt = self.clock.tick(self.fps) / 1000
 
-        self.scenes.get(SceneManager.get_scene(), self.DEFAULT_SCENE).update(dt)
+        self.scene_manager.get_active_scene().update(dt)
     def draw(self):
-        self.scenes.get(SceneManager.get_scene(), self.DEFAULT_SCENE).draw(self.window_manager.screen)
+        self.scene_manager.get_active_scene().draw(self.window_manager.screen)
         pygame.display.update()
     def close(self) -> None:
         pygame.quit()
@@ -46,31 +44,31 @@ class GameManager:
         self.fps = fps
         return self
     def add_scene(self, name: str, scene: BaseScene):
-        self.scenes[name] = scene
+        self.scene_manager.add_scene(name, scene)
         if self.window_manager:
             scene.window_manager = self.window_manager
         else:
             self.create_display(GameManager.DEFAULT_WIN_SIZE, GameManager.DEFAULT_FLAGS)
         scene.clock = self.clock
-        scene.on_load()
+        scene.scene_manager = self.scene_manager
         return self
     def add_scenes(self, scenes: dict[str, BaseScene]):
         for name, scene in scenes.items():
-            self.scenes[name] = scene
+            self.scene_manager.add_scene(name, scene)
         return self
-    def remove_scenes(self, scenes: dict[str, BaseScene]):
+    def remove_scenes(self, scenes: list[str]):
         for name in scenes.keys():
-            self.scenes.pop(name)
+            self.scene_manager.remove_scene(name)
         return self
     def remove_scene(self, name: str):
-        self.scenes.pop(name)
+        self.scene_manager.remove_scene(name)
         return self
     def set_active_scene(self, name: str):
-        if name in self.scenes:
-            SceneManager.set_scene(name)
+        if name in self.scene_manager.scenes:
+            self.scene_manager.set_scene(name)
         return self
     def set_default_scene(self, name: str):
-        self.DEFAULT_SCENE = self.scenes.get(name, self.DEFAULT_SCENE)
+        self.DEFAULT_SCENE = self.scene_manager.get_scene(name)
         return self
     def set_title(self, title: str):
         pygame.display.set_caption(title)

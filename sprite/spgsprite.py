@@ -9,12 +9,12 @@ class SPGSprite(Sprite):
                  groups: list[Group],  
                  image: pygame.Surface,
                  transform: Transform,
-                 depth: int = 0) -> None:
+                 layer: int = 0) -> None:
+        self._layer = layer
         super().__init__(groups)
         self._image = image
         self.image = self._image
         self.transform = transform
-        self.depth = depth
     @property
     def rect(self):
         return self.transform.rect
