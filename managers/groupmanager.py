@@ -9,8 +9,8 @@ class GroupManager:
     '''
     def __init__(self) -> None:
         self.groups: dict[str, pygame.sprite.Group] = {}
-    def add_group(self, name, group_type: Type[T] = pygame.sprite.Group) -> T:
-        self.groups[name] = group_type()
+    def add_group(self, name, group: T = pygame.sprite.Group) -> T:
+        self.groups[name] = group
         return self.groups[name]
     def remove_group(self, name: str) -> T:
         return self.groups.pop(name)

@@ -40,10 +40,10 @@ class TopDownController:
 
 class PlatformerController:
     def __init__(self,
-                 left = pygame.K_LEFT,
-                 right = pygame.K_RIGHT,
+                 left = pygame.K_a,
+                 right = pygame.K_d,
                  jump = pygame.K_SPACE,
-                 crouch = pygame.K_DOWN,
+                 crouch = pygame.K_s,
                  ) -> None:
         self.left = left
         self.right = right

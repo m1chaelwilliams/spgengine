@@ -1,7 +1,7 @@
 from pygame import Surface, Rect
 from pygame.transform import *
 from pygame.math import Vector2
-from math import degrees, atan2
+from math import degrees, atan2, sqrt
 
 def point_at(point: Vector2, target_point: Vector2, angle_offset: float = 0):
     '''
@@ -15,7 +15,6 @@ def point_at(point: Vector2, target_point: Vector2, angle_offset: float = 0):
 
     x_distance = target_point.x - point.x
     y_distance = target_point.y - point.y
-
     angle = degrees(atan2(y_distance, x_distance))
     return angle + angle_offset
 
@@ -36,10 +35,9 @@ def rotate_around_center(surface: Surface, angle: float, center_point: tuple[int
 
     return [surf, rect]
 
-def get_position_from_origin(origin: Vector2, angle: float, distance: int) -> Vector2:
+def get_position_from_origin(origin: Vector2, angle: float, distance_from_center: int) -> Vector2:
     offset = Vector2()
-    offset.from_polar((distance, angle))
-    offset.x = int(offset.x)
-    offset.y = int(offset.y)
+    offset.from_polar((distance_from_center, angle))
     
     return origin + offset 
+
