@@ -11,7 +11,9 @@ class SPGSprite(Sprite):
                  image: pygame.Surface,
                  position: Vector2 = VEC2ZERO,
                  velocity: Vector2 = VEC2ZERO,
+                 layer: int = 0
                  ) -> None:
+        self._layer = layer
         super().__init__(groups)
         self.og_image = image
         self.image = image
