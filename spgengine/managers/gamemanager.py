@@ -3,6 +3,7 @@ from spgengine.io import Eventhandler
 from spgengine.managers.scenemanager import SceneManager
 from spgengine.managers.windowmanager import WindowManager
 from spgengine.scenes.basescene import BaseScene
+from typing import Type
 import sys
 
 class GameManager:
@@ -45,10 +46,9 @@ class GameManager:
         return self
     def add_scene(self, name: str, scene: BaseScene):
         self.scene_manager.add_scene(name, scene)
-        if self.window_manager:
-            scene.window_manager = self.window_manager
-        else:
+        if not self.window_manager:
             self.create_display(GameManager.DEFAULT_WIN_SIZE, GameManager.DEFAULT_FLAGS)
+        scene.window_manager = self.window_manager
         scene.clock = self.clock
         scene.scene_manager = self.scene_manager
         return self
