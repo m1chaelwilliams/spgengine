@@ -54,7 +54,7 @@ class GameManager:
         return self
     def add_scenes(self, scenes: dict[str, BaseScene]):
         for name, scene in scenes.items():
-            self.scene_manager.add_scene(name, scene)
+            self.add_scene(name, scene)
         return self
     def remove_scenes(self, scenes: list[str]):
         for name in scenes.keys():
