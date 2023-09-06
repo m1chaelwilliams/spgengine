@@ -2,9 +2,9 @@ import pygame
 from spgengine.io import Eventhandler
 from spgengine.managers.scenemanager import SceneManager
 from spgengine.managers.windowmanager import WindowManager
-from spgengine.scenes.basescene import BaseScene
 import sys
 from typing import Type, TypeVar
+
 
 T = TypeVar('T')
 

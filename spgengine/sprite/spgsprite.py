@@ -1,28 +1,39 @@
 from typing import Any
 import pygame
-from pygame.sprite import Sprite, Group
+from pygame.sprite import Sprite
 from pygame.math import Vector2
-from spgengine.sprite.spgcomponents import *
+
+VEC2ZERO = Vector2(0,0)
 
 class SPGSprite(Sprite):
-    def __init__(self,
-                 groups: list[Group],  
+    def __init__(self, 
+                 groups,
                  image: pygame.Surface,
-                 transform: Transform,
-                 layer: int = 0) -> None:
-        self._layer = layer
+                 position: Vector2 = VEC2ZERO,
+                 velocity: Vector2 = VEC2ZERO,
+                 ) -> None:
         super().__init__(groups)
-        self._image = image
-        self.image = self._image
-        self.transform = transform
+        self.og_image = image
+        self.image = image
+        
+        self.rect = self.image.get_rect(topleft = position)
+        self.velocity = velocity
     @property
-    def rect(self):
-        return self.transform.rect
-    def update(self, dt) -> None:
+    def position(self) -> Vector2:
+        return Vector2(*self.rect.topleft)
+    def update(self, dt: int) -> None:
         pass
-    def draw(self, surface: pygame.Surface, offset: Vector2) -> None:
+    def draw(self, surface: pygame.Surface, offset: Vector2 = VEC2ZERO) -> None:
         surface.blit(
             self.image,
-            (self.transform.rect.x + offset.x,
-            self.transform.rect.y + offset[1])
+            (
+                self.rect.x + offset.x,
+                self.rect.y + offset.y
+            )
         )
+
+class SPGSpriteLite(Sprite):
+    def __init__(self, groups, image: pygame.Surface, position: Vector2 = VEC2ZERO) -> None:
+        super().__init__(groups)
+        self.image = image
+        self.rect = self.image.get_rect(topleft = position)
