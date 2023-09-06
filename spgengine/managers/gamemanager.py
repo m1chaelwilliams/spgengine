@@ -67,9 +67,6 @@ class GameManager:
         if name in self.scene_manager.scenes:
             self.scene_manager.set_scene(name)
         return self
-    def set_default_scene(self, name: str):
-        self.DEFAULT_SCENE = self.scene_manager.get_scene(name)
-        return self
     def set_title(self, title: str):
         pygame.display.set_caption(title)
         return self
