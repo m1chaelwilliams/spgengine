@@ -4,16 +4,16 @@ from spgengine.managers import *
 from spgengine.io import Eventhandler
 
 class BaseScene:
-    def __init__(self) -> None:
+    def __init__(self, wm, sm, clock, *args, **kwargs) -> None:
         # managers unique to a scene
         self.texture_manager = TextureManager()
         self.font_manager = FontManager()
         self.group_manager = GroupManager()
         # singleton managers. E.G. Only one instance per application
-        self.window_manager: WindowManager = None
-        self.scene_manager: SceneManager = None
+        self.window_manager: WindowManager = wm
+        self.scene_manager: SceneManager = sm
         
-        self.clock: pygame.time.Clock = None
+        self.clock: pygame.time.Clock = clock
 
         # states
         self.loaded = False

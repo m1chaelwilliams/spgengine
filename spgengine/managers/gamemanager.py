@@ -3,8 +3,10 @@ from spgengine.io import Eventhandler
 from spgengine.managers.scenemanager import SceneManager
 from spgengine.managers.windowmanager import WindowManager
 from spgengine.scenes.basescene import BaseScene
-from typing import Type
 import sys
+from typing import Type, TypeVar
+
+T = TypeVar('T')
 
 class GameManager:
     DEFAULT_WIN_SIZE = (1280, 720)
@@ -44,21 +46,19 @@ class GameManager:
     def set_fps(self, fps: float):
         self.fps = fps
         return self
-    def add_scene(self, name: str, scene: BaseScene):
-        self.scene_manager.add_scene(name, scene)
+    def add_scene(self, name: str, scene_type: Type[T], *args, **kwargs):
         if not self.window_manager:
             self.create_display(GameManager.DEFAULT_WIN_SIZE, GameManager.DEFAULT_FLAGS)
-        scene.window_manager = self.window_manager
-        scene.clock = self.clock
-        scene.scene_manager = self.scene_manager
-        return self
-    def add_scenes(self, scenes: dict[str, BaseScene]):
-        for name, scene in scenes.items():
-            self.add_scene(name, scene)
-        return self
-    def remove_scenes(self, scenes: list[str]):
-        for name in scenes.keys():
-            self.scene_manager.remove_scene(name)
+        scene = scene_type(
+            self.window_manager,
+            self.scene_manager,
+            self.clock,
+            *args,
+            **kwargs
+        )
+
+        self.scene_manager.add_scene(name, scene)
+
         return self
     def remove_scene(self, name: str):
         self.scene_manager.remove_scene(name)

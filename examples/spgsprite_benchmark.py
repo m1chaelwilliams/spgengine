@@ -13,8 +13,8 @@ COLORS = [
 ]
 
 class BenchMarkScene(BaseScene):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, wm, sm, clock) -> None:
+        super().__init__(wm, sm, clock)
     def on_load(self) -> None:
         self.sprites: list[SPGSprite] = []
 
@@ -64,6 +64,6 @@ class BenchMarkScene(BaseScene):
 if __name__ == "__main__":
     GameManager()\
         .create_display((1280, 720))\
-        .add_scene('benchmark', BenchMarkScene())\
+        .add_scene('benchmark', BenchMarkScene)\
         .set_active_scene('benchmark')\
         .start()
